@@ -1,0 +1,52 @@
+{
+  "name": "@effect-honeypot/mediawiki",
+  "version": "0.0.0",
+  "description": "Honeypot traps for MediaWiki probes (index.php?title=Special:, api.php, LocalSettings.php, ...).",
+  "keywords": [
+    "effect",
+    "honeypot",
+    "http",
+    "mediawiki",
+    "middleware",
+    "security"
+  ],
+  "license": "MIT",
+  "author": "Thomas Foster",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thomasfosterau/effect-honeypot.git",
+    "directory": "packages/mediawiki"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts",
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "./package.json": "./package.json"
+    },
+    "access": "public"
+  },
+  "scripts": {
+    "build": "vp pack"
+  },
+  "dependencies": {
+    "@effect-honeypot/core": "workspace:^"
+  },
+  "devDependencies": {
+    "effect": "catalog:"
+  },
+  "peerDependencies": {
+    "effect": "^4.0.5"
+  }
+}
