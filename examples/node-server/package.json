@@ -1,0 +1,14 @@
+{
+  "name": "@thomasfosterau/effect-honeypot-example-node-server",
+  "version": "0.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "start": "node src/main.ts"
+  },
+  "dependencies": {
+    "@effect/platform-node": "catalog:",
+    "@thomasfosterau/effect-honeypot": "workspace:*",
+    "effect": "catalog:"
+  }
+}

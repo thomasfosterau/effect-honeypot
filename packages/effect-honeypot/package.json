@@ -1,0 +1,55 @@
+{
+  "name": "@thomasfosterau/effect-honeypot",
+  "version": "0.0.0",
+  "description": "HTTP honeypot middleware for Effect: trap, tarpit and block clients probing for WordPress, Drupal, MediaWiki and other well-known endpoints.",
+  "keywords": [
+    "effect",
+    "honeypot",
+    "http",
+    "middleware",
+    "security"
+  ],
+  "license": "MIT",
+  "author": "Thomas Foster",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thomasfosterau/effect-honeypot.git",
+    "directory": "packages/effect-honeypot"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts",
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "./package.json": "./package.json"
+    },
+    "access": "public"
+  },
+  "scripts": {
+    "build": "vp pack"
+  },
+  "dependencies": {
+    "@thomasfosterau/effect-honeypot-common": "workspace:^",
+    "@thomasfosterau/effect-honeypot-core": "workspace:^",
+    "@thomasfosterau/effect-honeypot-drupal": "workspace:^",
+    "@thomasfosterau/effect-honeypot-mediawiki": "workspace:^",
+    "@thomasfosterau/effect-honeypot-wordpress": "workspace:^"
+  },
+  "devDependencies": {
+    "effect": "catalog:"
+  },
+  "peerDependencies": {
+    "effect": "^4.0.5"
+  }
+}

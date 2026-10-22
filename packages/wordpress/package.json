@@ -1,0 +1,52 @@
+{
+  "name": "@thomasfosterau/effect-honeypot-wordpress",
+  "version": "0.0.0",
+  "description": "Honeypot traps for WordPress probes (wp-login.php, xmlrpc.php, wp-admin, ...).",
+  "keywords": [
+    "effect",
+    "honeypot",
+    "http",
+    "middleware",
+    "security",
+    "wordpress"
+  ],
+  "license": "MIT",
+  "author": "Thomas Foster",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thomasfosterau/effect-honeypot.git",
+    "directory": "packages/wordpress"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts",
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "./package.json": "./package.json"
+    },
+    "access": "public"
+  },
+  "scripts": {
+    "build": "vp pack"
+  },
+  "dependencies": {
+    "@thomasfosterau/effect-honeypot-core": "workspace:^"
+  },
+  "devDependencies": {
+    "effect": "catalog:"
+  },
+  "peerDependencies": {
+    "effect": "^4.0.5"
+  }
+}

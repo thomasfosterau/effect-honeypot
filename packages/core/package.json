@@ -1,0 +1,49 @@
+{
+  "name": "@thomasfosterau/effect-honeypot-core",
+  "version": "0.0.0",
+  "description": "Traps, responders and blocklisting for Effect HTTP servers: the engine behind effect-honeypot.",
+  "keywords": [
+    "effect",
+    "honeypot",
+    "http",
+    "middleware",
+    "security"
+  ],
+  "license": "MIT",
+  "author": "Thomas Foster",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thomasfosterau/effect-honeypot.git",
+    "directory": "packages/core"
+  },
+  "files": [
+    "dist",
+    "src"
+  ],
+  "type": "module",
+  "sideEffects": false,
+  "exports": {
+    ".": "./src/index.ts",
+    "./package.json": "./package.json"
+  },
+  "publishConfig": {
+    "exports": {
+      ".": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "./package.json": "./package.json"
+    },
+    "access": "public"
+  },
+  "scripts": {
+    "build": "vp pack"
+  },
+  "dependencies": {},
+  "devDependencies": {
+    "effect": "catalog:"
+  },
+  "peerDependencies": {
+    "effect": "^4.0.5"
+  }
+}

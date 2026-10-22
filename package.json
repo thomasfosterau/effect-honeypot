@@ -1,0 +1,37 @@
+{
+  "name": "effect-honeypot-monorepo",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Effect HTTP middleware, layers and apps that trap vulnerability scanners probing for well-known framework endpoints.",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/thomasfosterau/effect-honeypot.git"
+  },
+  "type": "module",
+  "scripts": {
+    "ready": "vp check && vp test && vp run -r build",
+    "build": "vp run -r build",
+    "changeset": "changeset",
+    "changeset:version": "changeset version && vp fmt",
+    "changeset:publish": "vp run -r build && changeset publish",
+    "prepare": "vp config && effect-tsgo patch --typescript --oxlint"
+  },
+  "devDependencies": {
+    "@changesets/changelog-github": "catalog:",
+    "@changesets/cli": "catalog:",
+    "@effect/tsgo": "catalog:",
+    "@effect/vitest": "catalog:",
+    "@mpsuesser/oxlint-plugin-effect": "catalog:",
+    "@types/node": "catalog:",
+    "effect": "catalog:",
+    "typescript": "catalog:",
+    "vite": "catalog:",
+    "vite-plus": "catalog:",
+    "vitest": "catalog:"
+  },
+  "engines": {
+    "node": ">=22.18.0"
+  },
+  "packageManager": "pnpm@10.28.0"
+}

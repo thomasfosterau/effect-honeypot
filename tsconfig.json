@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "types": ["node"]
+  },
+  "include": [
+    "packages/*/src",
+    "packages/*/test",
+    "examples/*/src",
+    "vite.config.ts",
+    "vite.shared.ts",
+    "packages/*/vite.config.ts"
+  ]
+}
