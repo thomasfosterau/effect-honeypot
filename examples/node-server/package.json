@@ -1,5 +1,5 @@
 {
-  "name": "@effect-honeypot/example-node-server",
+  "name": "@thomasfosterau/effect-honeypot-example-node-server",
   "version": "0.0.0",
   "private": true,
   "type": "module",
@@ -8,7 +8,7 @@
   },
   "dependencies": {
     "@effect/platform-node": "catalog:",
-    "effect": "catalog:",
-    "effect-honeypot": "workspace:*"
+    "@thomasfosterau/effect-honeypot": "workspace:*",
+    "effect": "catalog:"
   }
 }

@@ -1,5 +1,5 @@
 {
-  "name": "effect-honeypot",
+  "name": "@thomasfosterau/effect-honeypot",
   "version": "0.0.0",
   "description": "HTTP honeypot middleware for Effect: trap, tarpit and block clients probing for WordPress, Drupal, MediaWiki and other well-known endpoints.",
   "keywords": [
@@ -40,11 +40,11 @@
     "build": "vp pack"
   },
   "dependencies": {
-    "@effect-honeypot/common": "workspace:^",
-    "@effect-honeypot/core": "workspace:^",
-    "@effect-honeypot/drupal": "workspace:^",
-    "@effect-honeypot/mediawiki": "workspace:^",
-    "@effect-honeypot/wordpress": "workspace:^"
+    "@thomasfosterau/effect-honeypot-common": "workspace:^",
+    "@thomasfosterau/effect-honeypot-core": "workspace:^",
+    "@thomasfosterau/effect-honeypot-drupal": "workspace:^",
+    "@thomasfosterau/effect-honeypot-mediawiki": "workspace:^",
+    "@thomasfosterau/effect-honeypot-wordpress": "workspace:^"
   },
   "devDependencies": {
     "effect": "catalog:"

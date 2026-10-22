@@ -15,16 +15,16 @@ them and lets you decide what happens next:
 
 ## Packages
 
-| Package                                            | Contents                                                                                   |
-| -------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| [`effect-honeypot`](packages/effect-honeypot)      | Everything below, plus `allTraps`                                                          |
-| [`@effect-honeypot/core`](packages/core)           | `Trap`, `Responder`, `Blocklist` and `Honeypot` (middleware, router layer, standalone app) |
-| [`@effect-honeypot/common`](packages/common)       | Framework-agnostic probes: dotfiles, VCS metadata, credentials, dumps, admin tools         |
-| [`@effect-honeypot/wordpress`](packages/wordpress) | WordPress                                                                                  |
-| [`@effect-honeypot/drupal`](packages/drupal)       | Drupal                                                                                     |
-| [`@effect-honeypot/mediawiki`](packages/mediawiki) | MediaWiki                                                                                  |
+| Package                                                           | Contents                                                                                   |
+| ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
+| [`@thomasfosterau/effect-honeypot`](packages/effect-honeypot)     | Everything below, plus `allTraps`                                                          |
+| [`@thomasfosterau/effect-honeypot-core`](packages/core)           | `Trap`, `Responder`, `Blocklist` and `Honeypot` (middleware, router layer, standalone app) |
+| [`@thomasfosterau/effect-honeypot-common`](packages/common)       | Framework-agnostic probes: dotfiles, VCS metadata, credentials, dumps, admin tools         |
+| [`@thomasfosterau/effect-honeypot-wordpress`](packages/wordpress) | WordPress                                                                                  |
+| [`@thomasfosterau/effect-honeypot-drupal`](packages/drupal)       | Drupal                                                                                     |
+| [`@thomasfosterau/effect-honeypot-mediawiki`](packages/mediawiki) | MediaWiki                                                                                  |
 
-Install `effect-honeypot` for everything, or `@effect-honeypot/core` plus just
+Install `@thomasfosterau/effect-honeypot` for everything, or `@thomasfosterau/effect-honeypot-core` plus just
 the trap packages you want.
 
 ## Usage
@@ -33,7 +33,7 @@ the trap packages you want.
 import * as Layer from "effect/Layer"
 import * as HttpRouter from "effect/http/HttpRouter"
 import * as HttpServerResponse from "effect/http/HttpServerResponse"
-import { Blocklist, Honeypot, Responder, allTraps } from "effect-honeypot"
+import { Blocklist, Honeypot, Responder, allTraps } from "@thomasfosterau/effect-honeypot"
 
 const Routes = HttpRouter.add("GET", "/", HttpServerResponse.text("Hello, human."))
 
@@ -62,7 +62,7 @@ Node server.
 ### Defining traps
 
 ```ts
-import { Trap } from "@effect-honeypot/core"
+import { Trap } from "@thomasfosterau/effect-honeypot-core"
 
 export const jenkins = Trap.make({
   id: "jenkins/script-console",

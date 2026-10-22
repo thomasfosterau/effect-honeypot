@@ -1,4 +1,4 @@
-# @effect-honeypot/drupal
+# @thomasfosterau/effect-honeypot-drupal
 
 Honeypot traps for Drupal probes (user/login, CHANGELOG.txt, ...).
 

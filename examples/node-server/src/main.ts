@@ -5,7 +5,7 @@ import * as NodeRuntime from "@effect/platform-node/NodeRuntime"
 import * as Layer from "effect/Layer"
 import * as HttpRouter from "effect/http/HttpRouter"
 import * as HttpServerResponse from "effect/http/HttpServerResponse"
-import { Blocklist, Honeypot, Responder, allTraps } from "effect-honeypot"
+import { Blocklist, Honeypot, Responder, allTraps } from "@thomasfosterau/effect-honeypot"
 
 const Routes = HttpRouter.add("GET", "/", HttpServerResponse.text("Hello, human."))
 

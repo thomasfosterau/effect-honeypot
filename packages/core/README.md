@@ -1,4 +1,4 @@
-# @effect-honeypot/core
+# @thomasfosterau/effect-honeypot-core
 
 Traps, responders and blocklisting for Effect HTTP servers: the engine behind effect-honeypot.
 

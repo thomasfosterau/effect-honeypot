@@ -1,3 +1,4 @@
+import * as EffectTsgo from "@effect/tsgo/oxlint-presets"
 import effect from "@mpsuesser/oxlint-plugin-effect"
 import { defineConfig } from "vite-plus"
 
@@ -10,7 +11,9 @@ export default defineConfig({
     ignorePatterns: ["**/CHANGELOG.md", ".changeset/*.md"],
   },
   lint: {
-    plugins: ["typescript", "unicorn", "oxc", "import", "vitest"],
+    // `effecttsgo` rules come from the Effect language service; they need the
+    // `effect-tsgo patch` applied by the `prepare` script.
+    plugins: ["typescript", "unicorn", "oxc", "import", "vitest", ...(EffectTsgo.recommended.plugins ?? [])],
     jsPlugins: effectRecommended.jsPlugins,
     ignorePatterns: ["**/dist/**"],
     options: {
@@ -18,7 +21,10 @@ export default defineConfig({
       typeCheck: true,
     },
     rules: {
+      ...EffectTsgo.recommended.rules,
       ...effectRecommended.rules,
+      // Everything under `effect/http` is marked unstable, and this library is built on it.
+      "effecttsgo/unstable-api-usage": "off",
     },
     overrides: [
       {

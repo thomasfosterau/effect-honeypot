@@ -4,13 +4,13 @@
  *
  * @since 0.1.0
  */
-import * as Common from "@effect-honeypot/common"
-import type { Trap } from "@effect-honeypot/core"
-import * as Drupal from "@effect-honeypot/drupal"
-import * as MediaWiki from "@effect-honeypot/mediawiki"
-import * as WordPress from "@effect-honeypot/wordpress"
+import * as Common from "@thomasfosterau/effect-honeypot-common"
+import type { Trap } from "@thomasfosterau/effect-honeypot-core"
+import * as Drupal from "@thomasfosterau/effect-honeypot-drupal"
+import * as MediaWiki from "@thomasfosterau/effect-honeypot-mediawiki"
+import * as WordPress from "@thomasfosterau/effect-honeypot-wordpress"
 
-export * from "@effect-honeypot/core"
+export * from "@thomasfosterau/effect-honeypot-core"
 
 export {
   /** @since 0.1.0 */

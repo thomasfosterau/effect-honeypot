@@ -1,4 +1,4 @@
-# @effect-honeypot/wordpress
+# @thomasfosterau/effect-honeypot-wordpress
 
 Honeypot traps for WordPress probes (wp-login.php, xmlrpc.php, wp-admin, ...).
 

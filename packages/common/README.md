@@ -1,4 +1,4 @@
-# @effect-honeypot/common
+# @thomasfosterau/effect-honeypot-common
 
 Honeypot traps for framework-agnostic probes: dotfiles, VCS metadata, backups, admin panels and more.
 

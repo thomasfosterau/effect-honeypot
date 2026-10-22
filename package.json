@@ -15,11 +15,12 @@
     "changeset": "changeset",
     "changeset:version": "changeset version && vp fmt",
     "changeset:publish": "vp run -r build && changeset publish",
-    "prepare": "vp config"
+    "prepare": "vp config && effect-tsgo patch --typescript --oxlint"
   },
   "devDependencies": {
     "@changesets/changelog-github": "catalog:",
     "@changesets/cli": "catalog:",
+    "@effect/tsgo": "catalog:",
     "@effect/vitest": "catalog:",
     "@mpsuesser/oxlint-plugin-effect": "catalog:",
     "@types/node": "catalog:",

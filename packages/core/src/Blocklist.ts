@@ -27,7 +27,7 @@ export class Blocklist extends Context.Service<
     isBlocked(client: string): Effect.Effect<boolean>
     unblock(client: string): Effect.Effect<void>
   }
->()("@effect-honeypot/core/Blocklist") {}
+>()("@thomasfosterau/effect-honeypot-core/Blocklist") {}
 
 /**
  * A process-local blocklist. Expired entries are pruned whenever a new

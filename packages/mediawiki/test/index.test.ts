@@ -1,4 +1,4 @@
-import { Trap } from "@effect-honeypot/core"
+import { Trap } from "@thomasfosterau/effect-honeypot-core"
 import { describe, expect, it } from "@effect/vitest"
 import * as Option from "effect/Option"
 

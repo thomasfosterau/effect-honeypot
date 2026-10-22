@@ -1,5 +1,5 @@
 {
-  "name": "@effect-honeypot/common",
+  "name": "@thomasfosterau/effect-honeypot-common",
   "version": "0.0.0",
   "description": "Honeypot traps for framework-agnostic probes: dotfiles, VCS metadata, backups, admin panels and more.",
   "keywords": [
@@ -40,7 +40,7 @@
     "build": "vp pack"
   },
   "dependencies": {
-    "@effect-honeypot/core": "workspace:^"
+    "@thomasfosterau/effect-honeypot-core": "workspace:^"
   },
   "devDependencies": {
     "effect": "catalog:"

@@ -1,4 +1,4 @@
-# @effect-honeypot/mediawiki
+# @thomasfosterau/effect-honeypot-mediawiki
 
 Honeypot traps for MediaWiki probes (index.php?title=Special:, api.php, LocalSettings.php, ...).
 

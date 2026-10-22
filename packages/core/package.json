@@ -1,5 +1,5 @@
 {
-  "name": "@effect-honeypot/core",
+  "name": "@thomasfosterau/effect-honeypot-core",
   "version": "0.0.0",
   "description": "Traps, responders and blocklisting for Effect HTTP servers: the engine behind effect-honeypot.",
   "keywords": [

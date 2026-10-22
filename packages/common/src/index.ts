@@ -5,7 +5,7 @@
  *
  * @since 0.1.0
  */
-import { Trap } from "@effect-honeypot/core"
+import { Trap } from "@thomasfosterau/effect-honeypot-core"
 import * as HttpServerResponse from "effect/http/HttpServerResponse"
 
 /**

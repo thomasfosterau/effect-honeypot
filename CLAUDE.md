@@ -13,6 +13,7 @@ Effect v4 HTTP honeypot: traps for probe paths (WordPress, Drupal, MediaWiki, co
 
 - Effect v4 (`effect@4`): HTTP modules live under `effect/http/*`. Use namespace imports from effect submodules (`import * as Option from "effect/Option"`).
 - Lint is oxlint + `@mpsuesser/oxlint-plugin-effect` (recommended preset) configured in the root `vite.config.ts`; prefer fixing code over disabling rules, and scope any exceptions with `lint.overrides`.
+- The Effect language service is `@effect/tsgo`: the `prepare` script runs `effect-tsgo patch`, which patches TypeScript (for `tsc` and editors) and oxlint/tsgolint (so `vp check` reports `effecttsgo/*` rules). `typescript` and `@effect/tsgo` are pinned exactly in the catalog because the patch only supports specific versions; bump them together.
 - Workspace packages export `./src/index.ts` directly; `publishConfig.exports` points at `dist/` for npm. Shared `vp pack` settings live in `vite.shared.ts`.
 - Every user-facing change to a published package needs a changeset (`vp run changeset`).
 
