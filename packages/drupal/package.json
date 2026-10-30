@@ -1,6 +1,6 @@
 {
   "name": "@thomasfosterau/effect-honeypot-drupal",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Honeypot traps for Drupal probes (user/login, CHANGELOG.txt, ...).",
   "keywords": [
     "drupal",

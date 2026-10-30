@@ -1,6 +1,6 @@
 {
   "name": "@thomasfosterau/effect-honeypot-mediawiki",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Honeypot traps for MediaWiki probes (index.php?title=Special:, api.php, LocalSettings.php, ...).",
   "keywords": [
     "effect",
