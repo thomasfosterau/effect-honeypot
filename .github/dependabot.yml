@@ -1,6 +1,70 @@
+# Dependabot: weekly updates for the pnpm workspace and the workflows' actions.
+#
+# Cooldown: pnpm's `minimumReleaseAge` holds a new version for 8 hours (480
+# minutes, pnpm-workspace.yaml). Dependabot's `cooldown` takes whole days only,
+# so it is 1 day: longer than pnpm's wait, so a Dependabot PR never proposes a
+# version pnpm would still refuse to install.
+#
+# Every lockstep set the catalog comments name is one group, so a set always
+# arrives in one PR. Dependabot cannot make these moves; do them by hand on the
+# matching group's PR, then `pnpm install` and commit the lockfile:
+#   - `vite` (catalog npm alias `npm:@voidzero-dev/vite-plus-core@<v>`): must
+#     equal `vite-plus`. `pnpm dlx --package=vite-plus@<v> vp migrate
+#     --no-interactive` re-pins it; drop any `minimumReleaseAgeExclude` entries
+#     it adds.
+#   - `vitest` / `@vitest/coverage-istanbul`: must equal the new vite-plus's
+#     `dependencies.vitest`, even if Dependabot proposes something newer.
+#   - `@effect/tsgo`: must be a release whose `components` table lists the
+#     typescript, oxlint and oxlint-tsgolint versions in use, or `pnpm install`
+#     fails in `prepare`. When the toolchain PR goes red at install, pick that
+#     release by hand on its branch.
+#   - the `overrides` in pnpm-workspace.yaml (`vite@*`, `vitest@*`, `effect@*`)
+#     point at the catalog and need no bump; the packages' `effect` peer range
+#     is a published floor, moved only on purpose.
 version: 2
 updates:
+  - package-ecosystem: npm
+    directory: /
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 1
+    open-pull-requests-limit: 10
+    ignore:
+      # npm alias of vite-plus's core; moved by hand with vite-plus (see header).
+      - dependency-name: vite
+    groups:
+      toolchain:
+        patterns:
+          - vite-plus
+          - vitest
+          - "@vitest/*"
+          - oxlint
+          - oxlint-tsgolint
+          - "@oxlint/*"
+          - oxfmt
+          - "@effect/tsgo"
+          - typescript
+          - "@enfect/oxlint"
+      effect:
+        patterns:
+          - effect
+          - "@effect/*"
+        exclude-patterns:
+          - "@effect/tsgo"
+      changesets:
+        patterns:
+          - "@changesets/*"
+      fallow:
+        patterns:
+          - fallow
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: weekly
+    cooldown:
+      default-days: 1
+    groups:
+      github-actions:
+        patterns:
+          - "*"

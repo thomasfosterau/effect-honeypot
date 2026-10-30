@@ -84,10 +84,12 @@ This repository uses [Vite+](https://viteplus.dev) (`vp`) with pnpm workspaces.
 
 ```sh
 vp install          # install dependencies (also installs the pre-commit hook)
-vp check            # format, lint (oxlint + @mpsuesser/oxlint-plugin-effect) and type check
+vp check            # format, lint (oxlint + @enfect/oxlint, type-aware) and type check
+vp run check        # the Effect-patched tsc type gate
 vp test             # run every package's tests
 vp run -r build     # build every package with `vp pack`
 vp run ready        # all of the above
+vp run test:coverage && fallow audit --base origin/main   # coverage map, then the fallow gate
 ```
 
 ### Adding a target package

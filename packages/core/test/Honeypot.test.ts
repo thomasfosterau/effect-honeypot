@@ -75,14 +75,16 @@ describe("Honeypot.layer", () => {
 })
 
 describe("Blocklist.layerMemory", () => {
-  it.effect("expires blocks", () =>
-    Effect.gen(function* () {
-      const blocklist = yield* Blocklist.Blocklist
-      yield* blocklist.block("client", Duration.minutes(5))
-      expect(yield* blocklist.isBlocked("client")).toBe(true)
-      expect(yield* blocklist.isBlocked("other")).toBe(false)
-      yield* TestClock.adjust(Duration.minutes(5))
-      expect(yield* blocklist.isBlocked("client")).toBe(false)
-    }).pipe(Effect.provide(Blocklist.layerMemory)),
-  )
+  it.layer(Blocklist.layerMemory)((layerIt) => {
+    layerIt.effect("expires blocks", () =>
+      Effect.gen(function* () {
+        const blocklist = yield* Blocklist.Blocklist
+        yield* blocklist.block("client", Duration.minutes(5))
+        expect(yield* blocklist.isBlocked("client")).toBe(true)
+        expect(yield* blocklist.isBlocked("other")).toBe(false)
+        yield* TestClock.adjust(Duration.minutes(5))
+        expect(yield* blocklist.isBlocked("client")).toBe(false)
+      }),
+    )
+  })
 })

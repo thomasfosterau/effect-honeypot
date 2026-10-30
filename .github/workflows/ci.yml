@@ -1,26 +1,46 @@
 name: CI
 
+# Every gate runs without a secret or a credential, so Dependabot PRs run it
+# safely: read-only token, actions pinned to commit SHAs, no persisted
+# checkout credentials.
+
 on:
   push:
     branches: [main]
   pull_request:
+    branches: [main]
 
 concurrency:
-  group: ${{ github.workflow }}-${{ github.ref }}
-  cancel-in-progress: true
+  group: ci-${{ github.ref }}
+  cancel-in-progress: ${{ github.ref != 'refs/heads/main' }}
 
-permissions:
-  contents: read
+# No permissions by default; the job grants only read access.
+permissions: {}
 
 jobs:
   check:
     runs-on: ubuntu-latest
+    timeout-minutes: 20
+    permissions:
+      contents: read
     steps:
-      - uses: actions/checkout@v7
-      - uses: voidzero-dev/setup-vp@v1.21.2
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
+          persist-credentials: false
+      # Installs the pnpm pinned by package.json's `packageManager`.
+      - uses: pnpm/action-setup@ea17c68df8912ef543352723c149a84f56e3d413 # v6.1.0
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          # A pinned major, never `latest`: setup-node resolves `latest` to the
+          # first nodejs.org index entry, pre-releases included.
           node-version: "24"
-          cache: true
-      - run: vp check
-      - run: vp test
-      - run: vp run -r build
+          cache: pnpm
+      # Runs `prepare` (`vp config` + `effect-tsgo patch`), which `vp check`'s
+      # `effecttsgo/*` rules and the `check` task's Effect diagnostics need.
+      - run: pnpm install --frozen-lockfile
+      # Format + lint, type-aware through oxlint-tsgolint (with `typeCheck`).
+      - run: pnpm exec vp check
+      - run: pnpm exec vp run check
+      - run: pnpm exec vp test run
+      - run: pnpm exec vp run -r build
+      - run: pnpm audit --audit-level high

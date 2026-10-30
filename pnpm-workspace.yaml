@@ -4,24 +4,49 @@ packages:
 
 catalogMode: prefer
 
+# Supply-chain guard: a newly published version waits 8 hours (480 minutes)
+# before `pnpm install` takes it. Dependabot's `cooldown` (1 day, its smallest
+# unit) is longer, so it never proposes a version pnpm would still refuse.
+minimumReleaseAge: 480
+minimumReleaseAgeExclude:
+  - "@thomasfosterau/*"
+
 catalog:
   "@changesets/changelog-github": ^1.0.1
   "@changesets/cli": ^3.0.3
+  # Effect line: `effect` and every `@effect/*` runtime package move together
+  # (Dependabot group `effect`). `@effect/tsgo` is toolchain, not runtime.
   "@effect/platform-node": ^4.0.5
-  "@effect/tsgo": 0.56.0 # Pinned: `effect-tsgo patch` supports only exact TypeScript / tsgolint versions
   "@effect/vitest": ^4.0.5
-  "@mpsuesser/oxlint-plugin-effect": ^0.6.0
-  "@types/node": ^24
   effect: ^4.0.5
-  typescript: 7.0.2 # Pinned for @effect/tsgo
-  vite-plus: 1.3.0
-  vite: npm:@voidzero-dev/vite-plus-core@1.3.0
+  # Toolchain: `vite-plus`, `vite`, `vitest`, `@vitest/*`, `@effect/tsgo`,
+  # `typescript` and `@enfect/oxlint` move together (Dependabot group `toolchain`).
+  # - `vite-plus` pins oxlint / oxfmt / oxlint-tsgolint and `vitest` exactly;
+  #   `vitest` and `@vitest/coverage-istanbul` must equal its `dependencies.vitest`.
+  # - `vite` is an npm alias of vite-plus's core and must equal `vite-plus`.
+  #   Dependabot cannot bump an npm alias: move it by hand (or run
+  #   `pnpm dlx --package=vite-plus@<v> vp migrate --no-interactive`, then drop any
+  #   `minimumReleaseAgeExclude` entries it adds).
+  # - `effect-tsgo patch` (the `prepare` script) supports only the exact
+  #   TypeScript / oxlint / oxlint-tsgolint versions in its `components` table
+  #   (node_modules/@effect/tsgo/dist/effect-tsgo.cjs) and hard-errors at install
+  #   on any other. 0.63.0 lists typescript 7.0.2, oxlint 1.89.0 and
+  #   oxlint-tsgolint 7.0.2004, the versions vite-plus 1.4.0 pins. Read it before
+  #   bumping any member of the set.
+  "@effect/tsgo": 0.63.0
+  "@enfect/oxlint": 0.9.0
+  "@vitest/coverage-istanbul": 5.0.5
+  typescript: 7.0.2
+  vite-plus: 1.4.0
+  vite: npm:@voidzero-dev/vite-plus-core@1.4.0
   vitest: 5.0.5
+  "@types/node": ^24
+  fallow: 3.37.0
 
 overrides:
   vite@*: "catalog:"
   vitest@*: "catalog:"
-  effect@*: "catalog:" # @mpsuesser/oxlint-plugin-effect pins effect 4.0.0; keep a single copy
+  effect@*: "catalog:" # @enfect/oxlint pins effect 4.1.0 exactly; keep a single copy (the catalog's)
 peerDependencyRules:
   allowAny:
     - vite
