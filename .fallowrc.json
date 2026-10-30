@@ -1,0 +1,69 @@
+{
+  "$schema": "https://raw.githubusercontent.com/fallow-rs/fallow/main/schema.json",
+  "entry": ["packages/*/test/**/*.test.ts", "packages/*/vite.config.ts", "vite.config.ts", "vite.shared.ts"],
+  "ignorePatterns": ["**/dist/**", "**/coverage/**"],
+  "rules": {
+    "unused-files": "error",
+    "unused-exports": "error",
+    "unused-types": "error",
+    "unused-dependencies": "error",
+    "unused-dev-dependencies": "warn",
+    "unused-enum-members": "error",
+    "unused-class-members": "warn",
+    "unresolved-imports": "error",
+    "unlisted-dependencies": "error",
+    "duplicate-exports": "off",
+    "circular-dependencies": "error",
+    "boundary-violation": "error",
+    "stale-suppressions": "warn"
+  },
+  "boundaries": {
+    "zones": [
+      {
+        "name": "core",
+        "patterns": ["packages/core/src/**"]
+      },
+      {
+        "name": "targets",
+        "patterns": [
+          "packages/common/src/**",
+          "packages/drupal/src/**",
+          "packages/mediawiki/src/**",
+          "packages/wordpress/src/**"
+        ]
+      },
+      {
+        "name": "umbrella",
+        "patterns": ["packages/effect-honeypot/src/**"]
+      },
+      {
+        "name": "examples",
+        "patterns": ["examples/**"]
+      }
+    ],
+    "rules": [
+      {
+        "from": "core",
+        "allow": []
+      },
+      {
+        "from": "targets",
+        "allow": ["core"]
+      },
+      {
+        "from": "umbrella",
+        "allow": ["core", "targets"]
+      },
+      {
+        "from": "examples",
+        "allow": ["umbrella", "core", "targets"]
+      }
+    ]
+  },
+  "health": {
+    "maxCyclomatic": 20,
+    "maxCognitive": 15,
+    "maxCrap": 30,
+    "coverage": "coverage/coverage-final.json"
+  }
+}
