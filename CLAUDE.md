@@ -33,7 +33,6 @@ CI holds a read-only token and no secrets (so Dependabot PRs run it safely), pin
 
 ## Agent sessions
 
-- `.claude/settings.json` enables the `@enfect/claude` plugin (Effect guidance, skills and post-write pattern checks), pinned by `ref` to a reviewed `mpsuesser/enfect` commit.
 - A PreToolUse hook (`.claude/hooks/fallow-gate.sh`) blocks `git commit` / `git push` when `fallow audit --base origin/main` returns `fail`; it reads the coverage map on disk, so run `vp run test:coverage` first. A PostToolUse hook runs `vp fmt --write` on each edited source, JSON or Markdown file.
 
 ## Fallow task map
