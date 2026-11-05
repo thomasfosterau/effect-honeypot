@@ -16,9 +16,9 @@ catalog:
   "@changesets/cli": ^3.0.3
   # Effect line: `effect` and every `@effect/*` runtime package move together
   # (Dependabot group `effect`). `@effect/tsgo` is toolchain, not runtime.
-  "@effect/platform-node": ^4.0.5
-  "@effect/vitest": ^4.0.5
-  effect: ^4.0.5
+  "@effect/platform-node": ^4.1.2
+  "@effect/vitest": ^4.1.2
+  effect: ^4.1.2
   # Toolchain: `vite-plus`, `vite`, `vitest`, `@vitest/*`, `@effect/tsgo`,
   # `typescript` and `@enfect/oxlint` move together (Dependabot group `toolchain`).
   # - `vite-plus` pins oxlint / oxfmt / oxlint-tsgolint and `vitest` exactly;
