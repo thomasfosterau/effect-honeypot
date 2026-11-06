@@ -20,20 +20,20 @@ Effect v4 HTTP honeypot: traps for probe paths (WordPress, Drupal, MediaWiki, co
 
 ## Commands and gates
 
-The default branch is `main`. Before pushing, run in this order (CI runs 1–5, `.github/workflows/ci.yml`):
+The default branch is `trunk`. Before pushing, run in this order (CI runs 1–5, `.github/workflows/ci.yml`):
 
 1. `vp check` — format + lint (type-aware through oxlint-tsgolint).
 2. `vp run check` — the Effect-patched native `tsc` over `tsconfig.json`.
 3. `vp test run` — the unit suite.
 4. `vp run -r build` — `vp pack` → every package's `dist/`.
 5. `pnpm audit --audit-level high` (network).
-6. `vp run test:coverage`, then `fallow audit --format json --quiet --explain --gate-marker agent --base origin/main` (not a CI step). Its config is `.fallowrc.json` (entries, package zones, health thresholds); the audit reads `coverage/coverage-final.json`.
+6. `vp run test:coverage`, then `fallow audit --format json --quiet --explain --gate-marker agent --base origin/trunk` (not a CI step). Its config is `.fallowrc.json` (entries, package zones, health thresholds); the audit reads `coverage/coverage-final.json`.
 
 CI holds a read-only token and no secrets (so Dependabot PRs run it safely), pins every action to a commit SHA and never persists checkout credentials; only the Release job holds `id-token: write`, and it never runs for Dependabot. `uvx zizmor --offline .github` audits the workflows (config in `.github/zizmor.yml`).
 
 ## Agent sessions
 
-- A PreToolUse hook (`.claude/hooks/fallow-gate.sh`) blocks `git commit` / `git push` when `fallow audit --base origin/main` returns `fail`; it reads the coverage map on disk, so run `vp run test:coverage` first. A PostToolUse hook runs `vp fmt --write` on each edited source, JSON or Markdown file.
+- A PreToolUse hook (`.claude/hooks/fallow-gate.sh`) blocks `git commit` / `git push` when `fallow audit --base origin/trunk` returns `fail`; it reads the coverage map on disk, so run `vp run test:coverage` first. A PostToolUse hook runs `vp fmt --write` on each edited source, JSON or Markdown file.
 
 ## Fallow task map
 
@@ -41,7 +41,7 @@ CI holds a read-only token and no secrets (so Dependabot PRs run it safely), pin
 | ----------------------------------------------------------------- | -------------------------------------------- |
 | delete an "unused" export or file                                 | `fallow dead-code --trace <file>:<export>`   |
 | delete an "unused" dependency                                     | `fallow dead-code --trace-dependency <name>` |
-| commit or open a PR                                               | `fallow audit --base origin/main`            |
+| commit or open a PR                                               | `fallow audit --base origin/trunk`           |
 | check which architecture rules apply to a file before changing it | `fallow guard <files>`                       |
 | understand a finding                                              | `fallow explain <issue-type>`                |
 

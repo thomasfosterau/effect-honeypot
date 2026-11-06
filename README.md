@@ -89,7 +89,7 @@ vp run check        # the Effect-patched tsc type gate
 vp test             # run every package's tests
 vp run -r build     # build every package with `vp pack`
 vp run ready        # all of the above
-vp run test:coverage && fallow audit --base origin/main   # coverage map, then the fallow gate
+vp run test:coverage && fallow audit --base origin/trunk   # coverage map, then the fallow gate
 ```
 
 ### Adding a target package
@@ -105,5 +105,5 @@ vp run test:coverage && fallow audit --base origin/main   # coverage map, then t
 Releases are managed with [Changesets](https://github.com/changesets/changesets):
 
 1. Run `vp run changeset` and commit the generated file with your change.
-2. On `main`, the release workflow opens a "Version packages" PR.
+2. On `trunk`, the release workflow opens a "Version packages" PR.
 3. Merging that PR publishes the bumped packages to npm.
