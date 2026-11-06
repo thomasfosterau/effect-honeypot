@@ -89,7 +89,7 @@ vp run check        # the Effect-patched tsc type gate
 vp test             # run every package's tests
 vp run -r build     # build every package with `vp pack`
 vp run ready        # all of the above
-vp run test:coverage && fallow audit --base origin/trunk   # coverage map, then the fallow gate
+vp run test:coverage && vp exec fallow audit --base origin/trunk   # coverage map, then the fallow gate
 ```
 
 ### Adding a target package

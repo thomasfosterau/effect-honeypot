@@ -27,13 +27,13 @@ The default branch is `trunk`. Before pushing, run in this order (CI runs 1–5,
 3. `vp test run` — the unit suite.
 4. `vp run -r build` — `vp pack` → every package's `dist/`.
 5. `pnpm audit --audit-level high` (network).
-6. `vp run test:coverage`, then `fallow audit --format json --quiet --explain --gate-marker agent --base origin/trunk` (not a CI step). Its config is `.fallowrc.json` (entries, package zones, health thresholds); the audit reads `coverage/coverage-final.json`.
+6. `vp run test:coverage`, then `vp exec fallow audit --format json --quiet --explain --gate-marker agent --base origin/trunk` (not a CI step). Its config is `.fallowrc.json` (entries, package zones, health thresholds); the audit reads `coverage/coverage-final.json`.
 
 CI holds a read-only token and no secrets (so Dependabot PRs run it safely), pins every action to a commit SHA and never persists checkout credentials; only the Release job holds `id-token: write`, and it never runs for Dependabot. `uvx zizmor --offline .github` audits the workflows (config in `.github/zizmor.yml`).
 
 ## Agent sessions
 
-- A PreToolUse hook (`.claude/hooks/fallow-gate.sh`) blocks `git commit` / `git push` when `fallow audit --base origin/trunk` returns `fail`; it reads the coverage map on disk, so run `vp run test:coverage` first. A PostToolUse hook runs `vp fmt --write` on each edited source, JSON or Markdown file.
+- A PreToolUse hook (`.claude/hooks/fallow-gate.sh`) blocks `git commit` / `git push` when `fallow audit --base origin/trunk` (run through `vp exec fallow`, the checkout's own pinned copy) returns `fail`, only in this checkout and its `.claude/worktrees/*`: from any other tree it runs none of that tree's tooling and skips the audit with a notice; it reads the coverage map on disk, so run `vp run test:coverage` first. A PostToolUse hook runs `vp fmt --write` on each edited source, JSON or Markdown file.
 
 ## Fallow task map
 
