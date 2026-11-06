@@ -3,6 +3,7 @@ import * as Duration from "effect/Duration"
 import * as Effect from "effect/Effect"
 import * as Layer from "effect/Layer"
 import * as Option from "effect/Option"
+import * as Schema from "effect/Schema"
 import * as HttpRouter from "effect/http/HttpRouter"
 import * as HttpServerResponse from "effect/http/HttpServerResponse"
 import * as TestClock from "effect/testing/TestClock"
@@ -33,12 +34,20 @@ const makeHandler = (options: Partial<Honeypot.Options> = {}) => {
   return HttpRouter.toWebHandler(App, { disableLogger: true })
 }
 
+/** The in-process web handler (or its disposal) rejected. */
+class HandlerFailed extends Schema.TaggedError<HandlerFailed, { readonly brand: unique symbol }>()("HandlerFailed", {
+  cause: Schema.Unknown,
+}) {}
+
 const fetchFrom =
   (handler: (request: Request) => Promise<Response>) =>
   (path: string, client = "1.2.3.4") =>
-    Effect.tryPromise(async () => {
-      const response = await handler(new Request(`http://localhost${path}`, { headers: { "x-client": client } }))
-      return { status: response.status, body: await response.text() }
+    Effect.tryPromise({
+      try: async () => {
+        const response = await handler(new Request(`http://localhost${path}`, { headers: { "x-client": client } }))
+        return { status: response.status, body: await response.text() }
+      },
+      catch: (cause) => new HandlerFailed({ cause }),
     })
 
 describe("Honeypot.layer", () => {
@@ -47,7 +56,7 @@ describe("Honeypot.layer", () => {
       const { handler, dispose } = makeHandler()
       const get = fetchFrom(handler)
       expect(yield* get("/")).toEqual({ status: 200, body: "home" })
-      yield* Effect.tryPromise(dispose)
+      yield* Effect.tryPromise({ try: dispose, catch: (cause) => new HandlerFailed({ cause }) })
     }),
   )
 
@@ -59,7 +68,7 @@ describe("Honeypot.layer", () => {
       expect(yield* get("/", "5.6.7.8")).toEqual({ status: 200, body: "home" })
       expect(yield* get("/", "1.2.3.4")).toEqual({ status: 403, body: "" })
       expect((yield* get("/app/.env", "9.9.9.9")).status).toBe(404)
-      yield* Effect.tryPromise(dispose)
+      yield* Effect.tryPromise({ try: dispose, catch: (cause) => new HandlerFailed({ cause }) })
     }),
   )
 
@@ -69,7 +78,7 @@ describe("Honeypot.layer", () => {
       const get = fetchFrom(handler)
       expect((yield* get("/wp-login.php")).status).toBe(403)
       expect(yield* get("/")).toEqual({ status: 200, body: "home" })
-      yield* Effect.tryPromise(dispose)
+      yield* Effect.tryPromise({ try: dispose, catch: (cause) => new HandlerFailed({ cause }) })
     }),
   )
 })

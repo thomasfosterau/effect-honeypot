@@ -119,7 +119,7 @@ export const anyOf =
  * @since 0.1.0
  * @category predicates
  */
-export const test = (trap: Trap, method: HttpMethod.HttpMethod, url: string): boolean =>
+export const test = (trap: Trap, method: string, url: string): boolean =>
   Option.match(trap.methods, {
     onNone: () => true,
     onSome: Arr.contains(method),
@@ -131,7 +131,7 @@ export const test = (trap: Trap, method: HttpMethod.HttpMethod, url: string): bo
  * @since 0.1.0
  * @category predicates
  */
-export const find = (traps: Iterable<Trap>, method: HttpMethod.HttpMethod, url: string): Option.Option<Trap> =>
+export const find = (traps: Iterable<Trap>, method: string, url: string): Option.Option<Trap> =>
   Arr.findFirst(traps, (trap) => test(trap, method, url))
 
 /**
