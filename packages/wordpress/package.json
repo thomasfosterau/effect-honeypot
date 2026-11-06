@@ -1,6 +1,6 @@
 {
   "name": "@thomasfosterau/effect-honeypot-wordpress",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Honeypot traps for WordPress probes (wp-login.php, xmlrpc.php, wp-admin, ...).",
   "keywords": [
     "effect",

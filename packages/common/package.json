@@ -1,6 +1,6 @@
 {
   "name": "@thomasfosterau/effect-honeypot-common",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "Honeypot traps for framework-agnostic probes: dotfiles, VCS metadata, backups, admin panels and more.",
   "keywords": [
     "effect",
