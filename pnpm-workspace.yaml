@@ -16,9 +16,9 @@ catalog:
   "@changesets/cli": ^3.0.3
   # Effect line: `effect` and every `@effect/*` runtime package move together
   # (Dependabot group `effect`). `@effect/tsgo` is toolchain, not runtime.
-  "@effect/platform-node": ^4.0.5
-  "@effect/vitest": ^4.0.5
-  effect: ^4.0.5
+  "@effect/platform-node": ^4.1.2
+  "@effect/vitest": ^4.1.2
+  effect: ^4.1.2
   # Toolchain: `vite-plus`, `vite`, `vitest`, `@vitest/*`, `@effect/tsgo` and
   # `typescript` move together (Dependabot group `toolchain`). `@enfect/oxlint`
   # is not in the group: it takes `@oxlint/plugins` at a caret range.
@@ -31,18 +31,19 @@ catalog:
   # - `effect-tsgo patch` (the `prepare` script) supports only the exact
   #   TypeScript / oxlint / oxlint-tsgolint versions in its `components` table
   #   (node_modules/@effect/tsgo/dist/effect-tsgo.cjs) and hard-errors at install
-  #   on any other. 0.63.0 lists typescript 7.0.2, oxlint 1.89.0 and
-  #   oxlint-tsgolint 7.0.2004, the versions vite-plus 1.4.0 pins. Read it before
+  #   on any other. 0.67.3 lists typescript 7.0.2, oxlint 1.88.0–1.91.0 and
+  #   oxlint-tsgolint 7.0.2004 / 7.0.2005; vite-plus 1.5.0 pins oxlint 1.91.0
+  #   and oxlint-tsgolint 7.0.2005. Read it before
   #   bumping any member of the set.
-  "@effect/tsgo": 0.63.0
-  "@enfect/oxlint": 0.9.0
-  "@vitest/coverage-istanbul": 5.0.5
+  "@effect/tsgo": 0.67.3
+  "@enfect/oxlint": 0.10.0
+  "@vitest/coverage-istanbul": 5.1.0
   typescript: 7.0.2
-  vite-plus: 1.4.0
-  vite: npm:@voidzero-dev/vite-plus-core@1.4.0
-  vitest: 5.0.5
-  "@types/node": ^24
-  fallow: 3.37.0
+  vite-plus: 1.5.0
+  vite: npm:@voidzero-dev/vite-plus-core@1.5.0
+  vitest: 5.1.0
+  "@types/node": ^26
+  fallow: 3.39.0
 
 overrides:
   vite@*: "catalog:"
