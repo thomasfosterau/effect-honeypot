@@ -11,10 +11,11 @@
     "ghcr.io/anthropics/devcontainer-features/claude-code:1.0": {},
     "ghcr.io/devcontainer-community/devcontainer-features/jq:1": {}
   },
-  // This repository has no SessionStart provisioning hook, so the container
-  // installs dependencies against the lockfile with the image's own `vp`, which
-  // also runs the `prepare` step (git hooks and the `effect-tsgo` patch).
-  "postCreateCommand": "vp install --frozen-lockfile",
+  // The same script as the SessionStart hook, so a Codespace is provisioned
+  // like an agent session: the global Vite+ at the catalog pin, `vp` / `vpx`
+  // linked into ~/.local/bin, then `vp install --frozen-lockfile` (which runs
+  // the `prepare` step: git hooks and the `effect-tsgo` patch).
+  "postCreateCommand": "bash .claude/hooks/session-start.sh",
   "customizations": {
     "vscode": {
       "extensions": ["Anthropic.claude-code", "oxc.oxc-vscode"]
