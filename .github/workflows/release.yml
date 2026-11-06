@@ -1,12 +1,12 @@
 name: Release
 
-# Changesets release flow: on every push to `main`, changesets/action either
+# Changesets release flow: on every push to `trunk`, changesets/action either
 # opens/updates the "Version packages" PR or, once that PR has merged and no
 # changesets remain, publishes to npm (trusted publishing over OIDC).
 
 on:
   push:
-    branches: [main]
+    branches: [trunk]
 
 concurrency:
   group: release-${{ github.ref }}
