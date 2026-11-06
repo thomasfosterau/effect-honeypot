@@ -60,3 +60,12 @@ updates:
       interval: weekly
     cooldown:
       default-days: 1
+  # The Dev Container features in .devcontainer/devcontainer.json. No group:
+  # each feature updates on its own PR. The image tag is a hand move (it
+  # follows the catalog's `vite-plus` pin; see the comment beside it).
+  - package-ecosystem: devcontainers
+    directory: /
+    schedule:
+      interval: weekly
+    cooldown:
+      default-days: 1
