@@ -19,8 +19,9 @@ catalog:
   "@effect/platform-node": ^4.0.5
   "@effect/vitest": ^4.0.5
   effect: ^4.0.5
-  # Toolchain: `vite-plus`, `vite`, `vitest`, `@vitest/*`, `@effect/tsgo`,
-  # `typescript` and `@enfect/oxlint` move together (Dependabot group `toolchain`).
+  # Toolchain: `vite-plus`, `vite`, `vitest`, `@vitest/*`, `@effect/tsgo` and
+  # `typescript` move together (Dependabot group `toolchain`). `@enfect/oxlint`
+  # is not in the group: it takes `@oxlint/plugins` at a caret range.
   # - `vite-plus` pins oxlint / oxfmt / oxlint-tsgolint and `vitest` exactly;
   #   `vitest` and `@vitest/coverage-istanbul` must equal its `dependencies.vitest`.
   # - `vite` is an npm alias of vite-plus's core and must equal `vite-plus`.

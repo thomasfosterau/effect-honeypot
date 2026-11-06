@@ -5,8 +5,9 @@
 # so it is 1 day: longer than pnpm's wait, so a Dependabot PR never proposes a
 # version pnpm would still refuse to install.
 #
-# Every lockstep set the catalog comments name is one group, so a set always
-# arrives in one PR. Dependabot cannot make these moves; do them by hand on the
+# Groups exist only for sets that must move in one PR (released together with
+# exact pins, or tied by a hard compatibility table); every other dependency
+# gets a PR of its own. Dependabot cannot make these moves; do them by hand on the
 # matching group's PR, then `pnpm install` and commit the lockfile:
 #   - `vite` (catalog npm alias `npm:@voidzero-dev/vite-plus-core@<v>`): must
 #     equal `vite-plus`. `pnpm dlx --package=vite-plus@<v> vp migrate
@@ -34,37 +35,28 @@ updates:
       # npm alias of vite-plus's core; moved by hand with vite-plus (see header).
       - dependency-name: vite
     groups:
+      # vite-plus pins vitest (and oxlint / oxlint-tsgolint) exactly, and
+      # `effect-tsgo patch` hard-errors on any typescript / oxlint missing from
+      # its `components` table. (`@enfect/oxlint` takes `@oxlint/plugins` at a
+      # caret range, so it is not tied to this set.)
       toolchain:
         patterns:
           - vite-plus
+          - "@voidzero-dev/*"
           - vitest
           - "@vitest/*"
-          - oxlint
-          - oxlint-tsgolint
-          - "@oxlint/*"
-          - oxfmt
           - "@effect/tsgo"
           - typescript
-          - "@enfect/oxlint"
+      # One release train and a runtime singleton.
       effect:
         patterns:
           - effect
           - "@effect/*"
         exclude-patterns:
           - "@effect/tsgo"
-      changesets:
-        patterns:
-          - "@changesets/*"
-      fallow:
-        patterns:
-          - fallow
   - package-ecosystem: github-actions
     directory: /
     schedule:
       interval: weekly
     cooldown:
       default-days: 1
-    groups:
-      github-actions:
-        patterns:
-          - "*"
