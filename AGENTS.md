@@ -22,7 +22,7 @@ Human-facing setup, gates and release steps are in [CONTRIBUTING.md](CONTRIBUTIN
 
 ## Commands and gates
 
-The default branch is `trunk`. Before pushing, run in this order (CI runs 1–5, `.github/workflows/ci.yml`):
+The default branch is `trunk`. `vp run ci` (a task in `vite.config.ts`) runs gates 1–5 in order and stops at the first failure; `.github/workflows/ci.yml` runs exactly that, on the newest LTS and the newest Current Node.js, and its final `ci` job is the one check a ruleset should require. Before pushing, run `vp run ci`, then gate 6:
 
 1. `vp check` — format + lint (type-aware through oxlint-tsgolint).
 2. `vp run check` — the Effect-patched native `tsc` over `tsconfig.json`.
@@ -31,7 +31,7 @@ The default branch is `trunk`. Before pushing, run in this order (CI runs 1–5,
 5. `pnpm audit --audit-level high` (network).
 6. `vp run test:coverage`, then `vp exec fallow audit --format json --quiet --explain --gate-marker agent --base origin/trunk` (not a CI step). Its config is `.fallowrc.json` (entries, package zones, health thresholds); the audit reads `coverage/coverage-final.json`.
 
-CI holds a read-only token and no secrets (so Dependabot PRs run it safely), pins every action to a commit SHA and never persists checkout credentials; only the Release job holds `id-token: write`, and it never runs for Dependabot. `uvx zizmor --offline .github` audits the workflows (config in `.github/zizmor.yml`).
+CI holds a read-only token and no secrets (so Dependabot PRs run it safely), pins every action to a commit SHA (`voidzero-dev/setup-vp`, which sets up the job, to an exact release tag) and never persists checkout credentials; only the Release job holds `id-token: write`, and it never runs for Dependabot. `uvx zizmor --offline .github` audits the workflows (config in `.github/zizmor.yml`).
 
 ## Fallow task map
 
