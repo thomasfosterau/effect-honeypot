@@ -43,7 +43,7 @@ catalog:
   vite: npm:@voidzero-dev/vite-plus-core@1.6.0
   vitest: 5.1.0
   "@types/node": ^26
-  fallow: 3.39.0
+  fallow: 3.42.0
 
 overrides:
   vite@*: "catalog:"
