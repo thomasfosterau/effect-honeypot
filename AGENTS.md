@@ -22,7 +22,7 @@ Human-facing setup, gates and release steps are in [CONTRIBUTING.md](CONTRIBUTIN
 
 ## Commands and gates
 
-The default branch is `trunk`. `vp run ci` (a task in `vite.config.ts`) runs gates 1–5 in order and stops at the first failure; `.github/workflows/ci.yml` runs exactly that, on the newest LTS and the newest Current Node.js, and its final `ci` job is the one check a ruleset should require. Before pushing, run `vp run ci`, then gate 6:
+The default branch is `trunk`. `vp run ci` (a task in `vite.config.ts`) runs gates 1–5 in order and stops at the first failure; `.github/workflows/ci.yml` runs exactly that, on the newest LTS and the newest Current Node.js; the checks a ruleset should require are the matrix legs, `ci (node lts)` and `ci (node latest)`. Before pushing, run `vp run ci`, then gate 6:
 
 1. `vp check` — format + lint (type-aware through oxlint-tsgolint).
 2. `vp run check` — the Effect-patched native `tsc` over `tsconfig.json`.
