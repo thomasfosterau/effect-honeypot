@@ -54,6 +54,8 @@ updates:
           - "@effect/*"
         exclude-patterns:
           - "@effect/tsgo"
+  # Actions are referenced by exact `@vX.Y.Z` tags and locked to their commits in
+  # .github/workflows/actions.lock; Dependabot keeps the tags current.
   - package-ecosystem: github-actions
     directory: /
     schedule:

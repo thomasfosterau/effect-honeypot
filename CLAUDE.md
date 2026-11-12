@@ -29,7 +29,7 @@ The default branch is `trunk`. Before pushing, run in this order (CI runs 1–5,
 5. `pnpm audit --audit-level high` (network).
 6. `vp run test:coverage`, then `vp exec fallow audit --format json --quiet --explain --gate-marker agent --base origin/trunk` (not a CI step). Its config is `.fallowrc.json` (entries, package zones, health thresholds); the audit reads `coverage/coverage-final.json`.
 
-CI holds a read-only token and no secrets (so Dependabot PRs run it safely), pins every action to a commit SHA and never persists checkout credentials; only the Release job holds `id-token: write`, and it never runs for Dependabot. `uvx zizmor --offline .github` audits the workflows (config in `.github/zizmor.yml`).
+CI holds a read-only token and no secrets (so Dependabot PRs run it safely), locks every action to its commit in `.github/workflows/actions.lock` (exact release tags in `uses:`; regenerate it with `gh actions-lock` after changing a workflow, and the `Lockfile` workflow runs `gh actions-lock --verify`) and never persists checkout credentials; only the Release job holds `id-token: write`, and it never runs for Dependabot. `uvx zizmor --offline .github` audits the workflows (config in `.github/zizmor.yml`).
 
 ## Agent sessions
 
