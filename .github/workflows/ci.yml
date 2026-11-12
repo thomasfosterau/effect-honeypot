@@ -1,8 +1,8 @@
 name: CI
 
 # Every gate runs without a secret or a credential, so Dependabot PRs run it
-# safely: read-only token, actions pinned to commit SHAs, no persisted
-# checkout credentials.
+# safely: read-only token, actions pinned to commit SHAs (setup-vp to an exact
+# release tag), no persisted checkout credentials.
 
 on:
   push:
@@ -27,20 +27,23 @@ jobs:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      # Installs the pnpm pinned by package.json's `packageManager`.
-      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
-      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
-        with:
-          # A pinned major, never `latest`: setup-node resolves `latest` to the
-          # first nodejs.org index entry, pre-releases included.
-          node-version: "24"
-          cache: pnpm
-      # Runs `prepare` (`vp config` + `effect-tsgo patch`), which `vp check`'s
+      # Installs Vite+ at the catalog's `vite-plus` pin (auto-detected from
+      # package.json / pnpm-workspace.yaml), Node.js, and the pnpm pinned by
+      # package.json's `packageManager`, then runs `vp install`. The install
+      # runs `prepare` (`vp config` + `effect-tsgo patch`), which `vp check`'s
       # `effecttsgo/*` rules and the `check` task's Effect diagnostics need.
-      - run: pnpm install --frozen-lockfile
+      # Referenced by exact release tag, as its README asks (the moving `v1`
+      # is frozen); .github/zizmor.yml allows a tag for this one action.
+      - uses: voidzero-dev/setup-vp@v1.22.0
+        with:
+          # A pinned major, never `latest` or `lts`.
+          node-version: "24"
+          cache: true
+          run-install: |
+            args: ['--frozen-lockfile']
       # Format + lint, type-aware through oxlint-tsgolint (with `typeCheck`).
-      - run: pnpm exec vp check
-      - run: pnpm exec vp run check
-      - run: pnpm exec vp test run
-      - run: pnpm exec vp run -r build
+      - run: vp check
+      - run: vp run check
+      - run: vp test run
+      - run: vp run -r build
       - run: pnpm audit --audit-level high
