@@ -2,6 +2,15 @@
 # `uvx zizmor --offline .github`; every workflow should report no findings
 # beyond what is configured away here, each with its reason.
 rules:
+  unpinned-uses:
+    config:
+      policies:
+        # setup-vp publishes exact release tags and asks to be referenced by
+        # one (its moving `v1` is frozen at v1.15.0). Dependabot's
+        # `github-actions` updates move the tag. Every other action stays on
+        # a full commit SHA.
+        voidzero-dev/setup-vp: ref-pin
+        "*": hash-pin
   dependabot-cooldown:
     config:
       # The owner's supply-chain policy: pnpm holds a new version for 8 hours
