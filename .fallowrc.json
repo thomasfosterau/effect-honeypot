@@ -2,6 +2,7 @@
   "$schema": "https://raw.githubusercontent.com/fallow-rs/fallow/main/schema.json",
   "entry": ["packages/*/test/**/*.test.ts", "packages/*/vite.config.ts", "vite.config.ts", "vite.shared.ts"],
   "ignorePatterns": ["**/dist/**", "**/coverage/**"],
+  "ignoreDependencies": ["@effect/language-service"],
   "rules": {
     "unused-files": "error",
     "unused-exports": "error",
