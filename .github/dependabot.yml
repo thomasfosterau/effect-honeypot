@@ -28,6 +28,8 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    assignees:
+      - thomasfosterau
     cooldown:
       default-days: 1
     open-pull-requests-limit: 10
@@ -58,6 +60,8 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    assignees:
+      - thomasfosterau
     cooldown:
       default-days: 1
   # The Dev Container features in .devcontainer/devcontainer.json. No group:
@@ -67,5 +71,7 @@ updates:
     directory: /
     schedule:
       interval: weekly
+    assignees:
+      - thomasfosterau
     cooldown:
       default-days: 1
