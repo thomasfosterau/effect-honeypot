@@ -31,16 +31,16 @@ catalog:
   # - `effect-tsgo patch` (the `prepare` script) supports only the exact
   #   TypeScript / oxlint / oxlint-tsgolint versions in its `components` table
   #   (node_modules/@effect/tsgo/dist/effect-tsgo.cjs) and hard-errors at install
-  #   on any other. 0.67.3 lists typescript 7.0.2, oxlint 1.88.0–1.91.0 and
-  #   oxlint-tsgolint 7.0.2004 / 7.0.2005; vite-plus 1.5.0 pins oxlint 1.91.0
-  #   and oxlint-tsgolint 7.0.2005. Read it before
+  #   on any other. 0.67.7 lists typescript 7.0.2, oxlint 1.91.0–1.93.0 and
+  #   oxlint-tsgolint 7.0.2004–7.0.2006; vite-plus 1.6.0 pins oxlint 1.93.0
+  #   and oxlint-tsgolint 7.0.2006. Read it before
   #   bumping any member of the set.
-  "@effect/tsgo": 0.67.3
+  "@effect/tsgo": 0.67.7
   "@enfect/oxlint": 0.10.0
   "@vitest/coverage-istanbul": 5.1.0
   typescript: 7.0.2
-  vite-plus: 1.5.0
-  vite: npm:@voidzero-dev/vite-plus-core@1.5.0
+  vite-plus: 1.6.0
+  vite: npm:@voidzero-dev/vite-plus-core@1.6.0
   vitest: 5.1.0
   "@types/node": ^26
   fallow: 3.42.0
