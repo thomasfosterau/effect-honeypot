@@ -1,46 +1,73 @@
 name: CI
 
-# Every gate runs without a secret or a credential, so Dependabot PRs run it
-# safely: read-only token, actions pinned to commit SHAs, no persisted
-# checkout credentials.
+# The one CI workflow. Its only command is `vp run ci`, the task in
+# vite.config.ts that chains every gate (format + lint + types, the
+# Effect-patched tsc, tests, build, audit), so CI and a local `vp run ci` are
+# the same thing. It runs on the newest LTS and the newest Current Node.js.
+#
+# No secret and no credential, so Dependabot PRs run it safely: read-only
+# token, actions pinned to commit SHAs (setup-vp to an exact release tag), no
+# persisted checkout credentials.
 
 on:
+  pull_request:
   push:
     branches: [trunk]
-  pull_request:
-    branches: [trunk]
+  workflow_dispatch:
 
 concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: ${{ github.ref != 'refs/heads/trunk' }}
 
-# No permissions by default; the job grants only read access.
+# No permissions by default; each job grants only what it needs.
 permissions: {}
 
 jobs:
-  check:
+  test:
+    name: ci (node ${{ matrix.node }})
     runs-on: ubuntu-latest
     timeout-minutes: 20
     permissions:
       contents: read
+    strategy:
+      fail-fast: false
+      matrix:
+        # Vite+ aliases: `lts` is the newest LTS release, `latest` the newest
+        # stable release (pre-releases are skipped). Both must satisfy
+        # package.json's `engines.node`.
+        node: [lts, latest]
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
         with:
           persist-credentials: false
-      # Installs the pnpm pinned by package.json's `packageManager`.
-      - uses: pnpm/action-setup@73e46992e05b19abd31f2f3c20e0e7370d762115 # v6.1.1
-      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+      # Installs Vite+ at the catalog's `vite-plus` pin (auto-detected), the
+      # matrix's Node.js and the pnpm pinned by package.json's
+      # `packageManager`, then runs `vp install --frozen-lockfile`, whose
+      # `prepare` step (`vp config` + `effect-tsgo patch`) the lint and type
+      # gates need. Referenced by exact release tag, as its README asks (the
+      # moving `v1` is frozen); .github/zizmor.yml allows a tag for this one
+      # action.
+      - uses: voidzero-dev/setup-vp@v1.22.0
         with:
-          # A pinned major, never `latest`: setup-node resolves `latest` to the
-          # first nodejs.org index entry, pre-releases included.
-          node-version: "24"
-          cache: pnpm
-      # Runs `prepare` (`vp config` + `effect-tsgo patch`), which `vp check`'s
-      # `effecttsgo/*` rules and the `check` task's Effect diagnostics need.
-      - run: pnpm install --frozen-lockfile
-      # Format + lint, type-aware through oxlint-tsgolint (with `typeCheck`).
-      - run: pnpm exec vp check
-      - run: pnpm exec vp run check
-      - run: pnpm exec vp test run
-      - run: pnpm exec vp run -r build
-      - run: pnpm audit --audit-level high
+          node-version: ${{ matrix.node }}
+          cache: true
+          run-install: |
+            args: ['--frozen-lockfile']
+      - run: vp run ci
+
+  # One stable check name, `ci`, for required-check rulesets, whatever the
+  # matrix holds.
+  ci:
+    name: ci
+    needs: [test]
+    if: always()
+    runs-on: ubuntu-latest
+    timeout-minutes: 5
+    permissions: {}
+    steps:
+      - name: Require every matrix job to have passed
+        env:
+          RESULT: ${{ needs.test.result }}
+        run: |
+          echo "test: $RESULT"
+          test "$RESULT" = "success"

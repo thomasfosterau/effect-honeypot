@@ -90,6 +90,14 @@ export default defineConfig({
         command: "tsc -p tsconfig.json",
         cache: { input: cacheInputs },
       },
+      // The whole CI gate, in order; `.github/workflows/ci.yml` runs exactly
+      // this, so a local `vp run ci` and CI are the same thing. Fail-fast: the
+      // first failing gate ends the run. Never cached: `pnpm audit` reads the
+      // network, and the gates below cache themselves where they can.
+      ci: {
+        command: "vp check && vp run check && vp test run && vp run -r build && pnpm audit --audit-level high",
+        cache: false,
+      },
       "test:coverage": {
         command: "vp test run --coverage",
         cache: false,
