@@ -13,21 +13,15 @@ them and lets you decide what happens next:
 - send back **garbage** bytes, or **tarpit** it with a slow response
 - **report** the hit (logs by default; plug in metrics, alerts, a firewall API...)
 
-## Packages
+## Install
 
-| Package                                                           | Contents                                                                                   |
-| ----------------------------------------------------------------- | ------------------------------------------------------------------------------------------ |
-| [`@thomasfosterau/effect-honeypot`](packages/effect-honeypot)     | Everything below, plus `allTraps`                                                          |
-| [`@thomasfosterau/effect-honeypot-core`](packages/core)           | `Trap`, `Responder`, `Blocklist` and `Honeypot` (middleware, router layer, standalone app) |
-| [`@thomasfosterau/effect-honeypot-common`](packages/common)       | Framework-agnostic probes: dotfiles, VCS metadata, credentials, dumps, admin tools         |
-| [`@thomasfosterau/effect-honeypot-wordpress`](packages/wordpress) | WordPress                                                                                  |
-| [`@thomasfosterau/effect-honeypot-drupal`](packages/drupal)       | Drupal                                                                                     |
-| [`@thomasfosterau/effect-honeypot-mediawiki`](packages/mediawiki) | MediaWiki                                                                                  |
+```sh
+pnpm add @thomasfosterau/effect-honeypot effect
+```
 
-Install `@thomasfosterau/effect-honeypot` for everything, or `@thomasfosterau/effect-honeypot-core` plus just
-the trap packages you want.
+That is everything. For a smaller install, take `@thomasfosterau/effect-honeypot-core` plus only the trap packages you want.
 
-## Usage
+## Example
 
 ```ts
 import * as Layer from "effect/Layer"
@@ -46,64 +40,20 @@ const HoneypotLive = Honeypot.layer({
 export const App = Layer.mergeAll(Routes, HoneypotLive)
 ```
 
-`Honeypot.layer` installs global router middleware, so it also sees requests
-that match no route. There is also:
+A runnable Node server is in [`examples/node-server`](https://github.com/thomasfosterau/effect-honeypot/blob/trunk/examples/node-server/src/main.ts).
 
-- `Honeypot.middleware(options)` – plain `HttpMiddleware`-style function for any
-  `HttpServerRequest` app
-- `Honeypot.httpApp(options)` – a standalone app (404 for everything else), e.g.
-  for a dedicated decoy server
-- `Honeypot.makeHandler(options)` – the underlying request → `Option<response>`
-  function, for other integrations
+## Packages
 
-See [`examples/node-server`](examples/node-server/src/main.ts) for a runnable
-Node server.
+| Package                                                                                                                        | Contents                                                                                   |
+| ------------------------------------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------ |
+| [`@thomasfosterau/effect-honeypot`](https://github.com/thomasfosterau/effect-honeypot/tree/trunk/packages/effect-honeypot)     | Everything below, plus `allTraps`                                                          |
+| [`@thomasfosterau/effect-honeypot-core`](https://github.com/thomasfosterau/effect-honeypot/tree/trunk/packages/core)           | `Trap`, `Responder`, `Blocklist` and `Honeypot` (middleware, router layer, standalone app) |
+| [`@thomasfosterau/effect-honeypot-common`](https://github.com/thomasfosterau/effect-honeypot/tree/trunk/packages/common)       | Framework-agnostic probes: dotfiles, VCS metadata, credentials, dumps, admin tools         |
+| [`@thomasfosterau/effect-honeypot-wordpress`](https://github.com/thomasfosterau/effect-honeypot/tree/trunk/packages/wordpress) | WordPress                                                                                  |
+| [`@thomasfosterau/effect-honeypot-drupal`](https://github.com/thomasfosterau/effect-honeypot/tree/trunk/packages/drupal)       | Drupal                                                                                     |
+| [`@thomasfosterau/effect-honeypot-mediawiki`](https://github.com/thomasfosterau/effect-honeypot/tree/trunk/packages/mediawiki) | MediaWiki                                                                                  |
 
-### Defining traps
+## More
 
-```ts
-import { Trap } from "@thomasfosterau/effect-honeypot-core"
-
-export const jenkins = Trap.make({
-  id: "jenkins/script-console",
-  description: "Jenkins script console",
-  tags: ["jenkins"],
-  match: Trap.anyOf(Trap.exact("/script"), Trap.directory("/jenkins")),
-})
-```
-
-Paths are normalised before matching (query string dropped, percent-decoded,
-lower-cased, slashes collapsed), so write matchers in lower case.
-
-Behind a reverse proxy, either apply `HttpMiddleware.xForwardedHeaders` or pass
-your own `clientId` so blocks apply to the real client, not the proxy.
-
-## Development
-
-This repository uses [Vite+](https://viteplus.dev) (`vp`) with pnpm workspaces.
-
-```sh
-vp install          # install dependencies (also installs the pre-commit hook)
-vp check            # format, lint (oxlint + @enfect/oxlint, type-aware) and type check
-vp run check        # the Effect-patched tsc type gate
-vp test             # run every package's tests
-vp run -r build     # build every package with `vp pack`
-vp run ready        # all of the above
-vp run test:coverage && vp exec fallow audit --base origin/trunk   # coverage map, then the fallow gate
-```
-
-### Adding a target package
-
-1. Copy `packages/wordpress` to `packages/<target>` and update `package.json`.
-2. Export each trap and a `traps` array (most specific first) from `src/index.ts`.
-3. Add tests for paths that must and must not be trapped. Avoid generic paths
-   (`/login`, `/admin`, `/index.php`) that a legitimate app might serve.
-4. Add the package to `packages/effect-honeypot` (dependency, re-export and `allTraps`).
-
-### Releasing
-
-Releases are managed with [Changesets](https://github.com/changesets/changesets):
-
-1. Run `vp run changeset` and commit the generated file with your change.
-2. On `trunk`, the release workflow opens a "Version packages" PR.
-3. Merging that PR publishes the bumped packages to npm.
+- [Usage guide](https://github.com/thomasfosterau/effect-honeypot/blob/trunk/docs/usage.md): the other ways to mount the honeypot, defining your own traps, path normalisation and running behind a proxy.
+- [Contributing](https://github.com/thomasfosterau/effect-honeypot/blob/trunk/CONTRIBUTING.md): setup, the gates, adding a target package and releasing.
