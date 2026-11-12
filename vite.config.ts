@@ -38,20 +38,24 @@ export default defineConfig({
     // Vite+'s own plugin, for `vite-plus/prefer-vite-plus-imports`.
     jsPlugins: [{ name: "vite-plus", specifier: "vite-plus/oxlint-plugin" }],
     rules: {
-      // Everything under `effect/http` is marked unstable, and this library is built on it.
+      // Everything under `effect/http` is marked unstable, and this library is
+      // built on it (61 sites across 15 files).
       "effecttsgo/unstable-api-usage": "off",
       "vite-plus/prefer-vite-plus-imports": "error",
-      // `_tag` is the discriminant of every Effect tagged union; reading it is the point.
-      "eslint/no-underscore-dangle": "off",
+      // `_tag` is the discriminant of every Effect tagged union; reading it is
+      // the point. Any other dangling underscore is still an error.
+      "eslint/no-underscore-dangle": ["error", { allow: ["_tag"] }],
       // Effect's doc-comment tags.
       "jsdoc/check-tag-names": ["error", { definedTags: ["since", "category"] }],
     },
     overrides: [
       {
-        // A Node server entrypoint passes `node:http`'s `createServer` to
-        // `NodeHttpServer.layer`; it builds a server, it is not an HTTP client
-        // (1 site: examples/node-server/src/main.ts).
-        files: ["examples/**"],
+        // Can't apply: `NodeHttpServer.layer` (and `layerServer`, `layerConfig`,
+        // `make`) take a lazy `node:http` / `node:http2` server and
+        // `@effect/platform-node` has no layer that creates one itself, so a
+        // Node entrypoint has to import `createServer`. It builds a server; it
+        // is not an HTTP client.
+        files: ["examples/node-server/src/main.ts"],
         rules: {
           "effect/use-http-client-service": "off",
         },
