@@ -1,6 +1,6 @@
 {
   "name": "@thomasfosterau/effect-honeypot",
-  "version": "0.0.0",
+  "version": "0.1.0",
   "description": "HTTP honeypot middleware for Effect: trap, tarpit and block clients probing for WordPress, Drupal, MediaWiki and other well-known endpoints.",
   "keywords": [
     "effect",
