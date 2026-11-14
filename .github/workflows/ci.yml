@@ -19,11 +19,11 @@ concurrency:
   group: ci-${{ github.ref }}
   cancel-in-progress: ${{ github.ref != 'refs/heads/trunk' }}
 
-# No permissions by default; each job grants only what it needs.
+# No permissions by default; the job grants only read access.
 permissions: {}
 
 jobs:
-  test:
+  ci:
     name: ci (node ${{ matrix.node }})
     runs-on: ubuntu-latest
     timeout-minutes: 20
@@ -54,20 +54,3 @@ jobs:
           run-install: |
             args: ['--frozen-lockfile']
       - run: vp run ci
-
-  # One stable check name, `ci`, for required-check rulesets, whatever the
-  # matrix holds.
-  ci:
-    name: ci
-    needs: [test]
-    if: always()
-    runs-on: ubuntu-latest
-    timeout-minutes: 5
-    permissions: {}
-    steps:
-      - name: Require every matrix job to have passed
-        env:
-          RESULT: ${{ needs.test.result }}
-        run: |
-          echo "test: $RESULT"
-          test "$RESULT" = "success"
